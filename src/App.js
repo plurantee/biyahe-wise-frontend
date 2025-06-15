@@ -1,167 +1,87 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./index.css";
+import React, { useState } from 'react';
+import axios from 'axios';
+import './App.css';
+import ModeSelector from './components/ModeSelector';
+import TripForm from './components/TripForm';
+import ResultDrawer from './components/ResultDrawer';
+import HowItWorks from './components/HowItWorks';
 
 function App() {
+  const [mode, setMode] = useState('');
   const [form, setForm] = useState({
-    origin: "SM North EDSA",
-    destination: "Glorietta 5",
-    dateTime: "Tomorrow at 8PM",
-    mode: "",
-    carDetails: "Honda City RS 2022",
+    origin: '',
+    destination: '',
+    dateTime: '',
+    carModel: ''
   });
-
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showResult, setShowResult] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
-    setShowResult(false);
     setLoading(true);
     try {
-      const res = await axios.post("https://biyahe-wise-backend.onrender.com/api/estimate", form);
+      const payload = { ...form, mode };
+      const res = await axios.post(
+        'https://biyahe-wise-backend.onrender.com/api/estimate',
+        payload
+      );
       setResult(res.data);
-      setShowResult(true);
-    } catch (err) {
-      console.error(err);
-      alert("Error calling backend");
+    } catch (error) {
+      console.error('Error fetching estimate:', error);
+      alert('Failed to fetch estimate');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col justify-center items-center p-6 relative overflow-hidden">
-      <h1 className="text-5xl font-bold mb-8 text-blue-600">BiyaheWise 🚗</h1>
+    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
+      <section id="form-section" className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="bg-white border border-blue-300 rounded-3xl shadow-2xl w-full max-w-3xl p-10">
 
-    
-      {/*<div className="w-full max-w-4xl mb-8">
-        <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded-lg text-center">
-          🔥 Ad Slot (Future: AdSense goes here)
-        </div>
-      </div>*/}
-
-      <div className="bg-white rounded-xl shadow-lg p-10 w-full max-w-lg z-10">
-        <div className="flex flex-col gap-4">
-
-          <div className="flex flex-col">
-            <label className="font-medium mb-2">Mode</label>
-            <div className="flex gap-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="DRIVE"
-                  checked={form.mode === "DRIVE"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Drive
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="mode"
-                  value="COMMUTE"
-                  checked={form.mode === "COMMUTE"}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Commute
-              </label>
-            </div>
+          {/* LOGO INSIDE FORM */}
+          <div className="flex justify-center mb-8">
+            <img src="/logo.png" alt="BiyaheWise Logo" className="h-12" />
           </div>
 
-          {form.mode && (
-            <>
-              <div className="flex flex-col">
-                <label className="font-medium mb-1">Origin</label>
-                <input name="origin" value={form.origin} onChange={handleChange} className="input" />
-              </div>
+          <ModeSelector mode={mode} setMode={setMode} />
 
-              <div className="flex flex-col">
-                <label className="font-medium mb-1">Destination</label>
-                <input name="destination" value={form.destination} onChange={handleChange} className="input" />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="font-medium mb-1">Date and Time</label>
-                <input name="dateTime" value={form.dateTime} onChange={handleChange} className="input" />
-              </div>
-
-              {form.mode === "DRIVE" && (
-                <div className="flex flex-col">
-                  <label className="font-medium mb-1">Car Model and Year</label>
-                  <input name="carDetails" value={form.carDetails} onChange={handleChange} className="input" />
-                </div>
-              )}
-
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className={`bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold transition ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"}`}
-              >
-                {loading ? "Calculating..." : "Estimate Trip"}
-              </button>
-            </>
+          {mode && (
+            <TripForm
+              mode={mode}
+              form={form}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              loading={loading}
+            />
           )}
+
+          <button
+            type="button"
+            className="w-full py-3 mt-6 bg-white text-blue-600 border border-blue-600 rounded-full font-semibold transition duration-300 hover:bg-blue-600 hover:text-white"
+            onClick={() => {
+              document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            How does it work?
+          </button>
         </div>
-      </div>
+      </section>
 
-      <div
-        className={`absolute top-0 right-0 h-full bg-white shadow-xl w-96 p-8 transition-transform duration-500 ease-in-out ${showResult ? "translate-x-0" : "translate-x-full"}`}
-        style={{ overflowY: "auto", maxHeight: "100vh" }}
-      >
-        {result && (
-          <>
-            <h3 className="text-2xl font-bold mb-4 text-blue-600">Results:</h3>
-
-            {form.mode === "DRIVE" && (
-              <>
-                <p className="text-lg mb-2">
-                  Estimated Time: {result.options[0].estimatedTimeMinutes} minutes
-                </p>
-                <p className="text-lg mb-2">
-                  Estimated Cost: ₱{result.options[0].estimatedCostPHP}
-                </p>
-                <p className="text-lg">
-                  Estimated Fuel Used: {result.estimatedLitersUsed} liters
-                </p>
-              </>
-            )}
-
-            {form.mode === "COMMUTE" && (
-              <div className="text-left text-lg mt-4">
-                <h4 className="font-bold mb-4 text-blue-600">Commute Options:</h4>
-
-                {result.options.map((option, optIdx) => (
-                  <div key={optIdx} className="mb-6">
-                    <h5 className="font-semibold mb-2 text-blue-500">{option.optionTitle}</h5>
-                    <p className="mb-1">Time: {option.estimatedTimeMinutes} minutes</p>
-                    <p className="mb-2">Cost: ₱{option.estimatedCostPHP}</p>
-
-                    {option.steps.map((step, stepIdx) => (
-                      <div key={stepIdx} className="mb-2">
-                        <span className="font-bold">Step {stepIdx + 1}:</span> {step.description}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-
-      {/* <div className="w-full max-w-4xl mt-8">
-        <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded-lg text-center">
-
-        </div>
-      </div> */}
+      <ResultDrawer result={result} setResult={setResult} mode={mode} />
+      <HowItWorks 
+        setMode={setMode} 
+        setForm={setForm} 
+        handleSubmit={handleSubmit} 
+      />
+      
+      <footer className="bg-blue-900 text-white text-center p-6">
+        © 2025 BiyaheWise. All rights reserved.
+      </footer>
     </div>
   );
 }

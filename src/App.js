@@ -23,7 +23,7 @@ function App() {
     setShowResult(false);
     setLoading(true);
     try {
-      const res = await axios.post("https://biyahewise-backend-80fd70d1f08e.herokuapp.com/api/estimate", form);
+      const res = await axios.post("https://biyahe-wise-backend.onrender.com/api/estimate", form);
       setResult(res.data);
       setShowResult(true);
     } catch (err) {

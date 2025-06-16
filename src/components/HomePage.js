@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { Helmet } from 'react-helmet-async';
 import ModeSelector from './ModeSelector';
 import TripForm from './TripForm';
 import ResultDrawer from './ResultDrawer';
@@ -12,6 +12,10 @@ const HomePage = () => {
     const [searchParams] = useSearchParams();
     const originQP = searchParams.get("origin");
     const destinationQP = searchParams.get("destination");
+
+    const title = (originQP && destinationQP) 
+    ? `How to get from ${originQP} to ${destinationQP} - BiyaheWise`
+    : 'BiyaheWise - Trip Cost & Commute Estimator Philippines';
 
     const [mode, setMode] = useState(() => {
         return (originQP && destinationQP) ? 'COMMUTE' : '';
@@ -54,6 +58,12 @@ const HomePage = () => {
     };
   
     return (
+      <>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={`Estimate cost, routes, and travel time from ${originQP || 'anywhere'} to ${destinationQP || 'anywhere'}`} />
+        <link rel="canonical" href={`https://biyahewise.com/how-to-get?origin=${originQP}&destination=${destinationQP}`} />
+      </Helmet>
       <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
         <section id="form-section" className="flex flex-col items-center justify-center min-h-screen p-4">
           <div className="bg-white border border-blue-300 rounded-3xl shadow-2xl w-full max-w-3xl p-10">
@@ -98,7 +108,9 @@ const HomePage = () => {
           © 2025 BiyaheWise. All rights reserved.
         </footer>
       </div>
+    </>
     );
+    
   }
 
 export default HomePage;

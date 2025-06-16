@@ -9,22 +9,22 @@
 
   <!-- How to get pages -->
   <url>
-    <loc>https://biyahewise.com/how-to-get?origin=SM%20North%20Edsa&destination=Glorietta%205</loc>
+    <loc>https://biyahewise.com/how-to-get?origin=SM%20North%20Edsa&amp;destination=Glorietta%205</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://biyahewise.com/how-to-get?origin=SMNE&destination=G5</loc>
+    <loc>https://biyahewise.com/how-to-get?origin=SMNE&amp;destination=G5</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://biyahewise.com/how-to-get?origin=Cebu&destination=Manila</loc>
+    <loc>https://biyahewise.com/how-to-get?origin=Cebu&amp;destination=Manila</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://biyahewise.com/how-to-get?origin=Taguig&destination=Pasig</loc>
+    <loc>https://biyahewise.com/how-to-get?origin=Taguig&amp;destination=Pasig</loc>
     <priority>0.8</priority>
   </url>
 

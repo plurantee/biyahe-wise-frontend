@@ -26,7 +26,7 @@ function App() {
     try {
       const payload = { ...form, mode };
       const res = await axios.post(
-        'https://biyahe-wise-backend.onrender.com/api/estimate',
+        'https://api.biyahewise.com/api/estimate',
         payload
       );
       setResult(res.data);

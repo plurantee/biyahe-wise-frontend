@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TripForm = ({ mode, form, handleChange, handleSubmit, loading }) => (
-  <>
+  <form>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <label className="block mb-2 font-semibold">Origin</label>
@@ -23,11 +23,11 @@ const TripForm = ({ mode, form, handleChange, handleSubmit, loading }) => (
       )}
     </div>
 
-    <button onClick={handleSubmit} disabled={loading}
+    <button type="submit" onClick={handleSubmit} disabled={loading}
       className="w-full p-4 mt-8 bg-blue-600 text-white rounded-full font-semibold transition duration-300 hover:bg-white hover:text-blue-600 border border-blue-600">
       {loading ? 'Estimating...' : 'Estimate Trip'}
     </button>
-  </>
+  </form>
 );
 
 export default TripForm;

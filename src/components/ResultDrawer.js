@@ -12,8 +12,12 @@ const ResultDrawer = ({ result, setResult, mode }) => (
           {result.options.map((option, idx) => (
             <div key={idx} className="mb-6">
               <h3 className="text-lg font-bold mb-2">{option.optionTitle}</h3>
+              
               <p className="mb-1">Time: {option.estimatedTimeMinutes} minutes</p>
               <p className="mb-1">Cost: ₱{option.estimatedCostPHP}</p>
+              { mode=='DRIVE' && (
+                <p className="mb-1">Estimated Liters of Gas: {result.estimatedLitersUsed}L</p>
+              )}
               <div className="mt-2">
                 {option.steps.map((step, stepIdx) => (
                   <p key={stepIdx} className="text-sm text-gray-600 mb-1">• {step.description}</p>

@@ -9,6 +9,7 @@ const ResultDrawer = ({ result, setResult, mode }) => (
         <h2 className="text-2xl font-bold mb-4 text-center">Result</h2>
 
         <div>
+        <button className="mt-8 px-6 py-3 bg-blue-500 text-white rounded-full" onClick={() => setResult(null)}>Close</button>
           {result.options.map((option, idx) => (
             <div key={idx} className="mb-6">
               <h3 className="text-lg font-bold mb-2">{option.optionTitle}</h3>
@@ -27,7 +28,6 @@ const ResultDrawer = ({ result, setResult, mode }) => (
           ))}
         </div>
 
-        <button className="mt-8 px-6 py-3 bg-blue-500 text-white rounded-full" onClick={() => setResult(null)}>Close</button>
       </motion.div>
     )}
   </AnimatePresence>

@@ -10,7 +10,7 @@ import { auth, googleProvider, appleProvider } from '../services/firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
 const HomePage = () => {
-  const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8080';
+  const API_BASE_URL = process.env.API_BASE_URL || 'https://api.biyahewise.com';
   const [searchParams] = useSearchParams();
   const originQP = searchParams.get("origin");
   const destinationQP = searchParams.get("destination");
